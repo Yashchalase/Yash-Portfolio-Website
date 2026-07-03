@@ -17,9 +17,9 @@ import resumeData from "../data/resumeData";
 const navItems = [
     { id: "hero", label: "Home", icon: <FaHome /> },
     { id: "about", label: "About", icon: <FaUser /> },
-    { id: "skills", label: "Skills", icon: <FaCode /> },
-    { id: "projects", label: "Projects", icon: <FaProjectDiagram /> },
     { id: "experience", label: "Experience", icon: <FaBriefcase /> },
+    { id: "projects", label: "Projects", icon: <FaProjectDiagram /> },
+    { id: "skills", label: "Skills", icon: <FaCode /> },
     { id: "education", label: "Education", icon: <FaGraduationCap /> },
     { id: "certifications", label: "Achievements", icon: <FaAward /> },
     { id: "contact", label: "Contact", icon: <FaEnvelope /> },

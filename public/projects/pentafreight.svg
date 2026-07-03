@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="pentafreight-bg" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a855f7" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="#0f172a"/>
+  <rect width="800" height="450" fill="url(#pentafreight-bg)"/>
+  <text x="40" y="220" font-family="system-ui,sans-serif" font-size="42" font-weight="700" fill="#f1f5f9">Penta Freight</text>
+  <text x="40" y="270" font-family="system-ui,sans-serif" font-size="22" fill="#94a3b8">Website Clone</text>
+</svg>

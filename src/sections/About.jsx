@@ -8,15 +8,17 @@ import {
 import SectionHeading from "../components/SectionHeading";
 import resumeData from "../data/resumeData";
 
+const SKILL_COUNT = Object.values(resumeData.skills).flat().length;
+
 export default function About() {
     const { name, summary, highlights, location, email, phone } =
         resumeData.personal;
 
     const stats = [
-        { label: "Projects Completed", value: `${resumeData.projects.length}+` },
-        { label: "Certifications", value: `${resumeData.certifications.length}+` },
-        { label: "Technologies", value: "15+" },
-        { label: "Experience", value: "Intern" },
+        { label: "Projects Built", value: `${resumeData.projects.length}+` },
+        { label: "Years Experience", value: "1+" },
+        { label: "Technologies", value: `${SKILL_COUNT}+` },
+        { label: "CGPA", value: "8.44" },
     ];
 
     return (
@@ -62,14 +64,14 @@ export default function About() {
                                     <FaMapMarkerAlt className="about-contact-item-icon" />
                                     {location}
                                 </div>
-                                <div className="about-contact-item">
+                                <a href={`mailto:${email}`} className="about-contact-item about-contact-link">
                                     <FaEnvelope className="about-contact-item-icon" />
                                     {email}
-                                </div>
-                                <div className="about-contact-item">
+                                </a>
+                                <a href={`tel:${phone.replace(/\s/g, "")}`} className="about-contact-item about-contact-link">
                                     <FaPhone className="about-contact-item-icon" />
                                     {phone}
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </motion.div>

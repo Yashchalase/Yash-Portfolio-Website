@@ -6,8 +6,10 @@ import {
     FaDatabase,
     FaBrain,
     FaNetworkWired,
-    FaMousePointer,
     FaLaptopCode,
+    FaGitAlt,
+    FaMousePointer,
+    FaRocket,
 } from "react-icons/fa";
 import {
     SiJavascript,
@@ -24,6 +26,9 @@ import {
     SiPostgresql,
     SiGithub,
     SiPostman,
+    SiDocker,
+    SiOpenai,
+    SiAnthropic,
 } from "react-icons/si";
 import SectionHeading from "../components/SectionHeading";
 import resumeData from "../data/resumeData";
@@ -50,7 +55,12 @@ const iconMap = {
     SiVisualstudiocode: FaLaptopCode,
     SiGithub: SiGithub,
     SiPostman: SiPostman,
+    FaGitAlt: FaGitAlt,
+    SiDocker: SiDocker,
     FaMousePointer: FaMousePointer,
+    FaRocket: FaRocket,
+    SiOpenai: SiOpenai,
+    SiAnthropic: SiAnthropic,
 };
 
 const categoryColors = {

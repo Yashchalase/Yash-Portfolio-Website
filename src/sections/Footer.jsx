@@ -7,9 +7,9 @@ export default function Footer() {
 
     const navItems = [
         "About",
-        "Skills",
-        "Projects",
         "Experience",
+        "Projects",
+        "Skills",
         "Education",
         "Contact",
     ];
