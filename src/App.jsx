@@ -1,4 +1,5 @@
 import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
@@ -36,6 +37,7 @@ function App() {
         </main>
         <Footer />
         <BackToTop />
+        <Analytics />
       </MotionConfig>
     </LazyMotion>
   );
