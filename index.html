@@ -1,49 +1,68 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yash Chalase — Full Stack Developer | React.js, Next.js</title>
   <meta name="description"
-    content="Yash Chalase — Software Developer Portfolio. Specializing in React.js, Next.js, and full-stack web development. Explore my projects, skills, and experience." />
-  <meta name="keywords"
-    content="Yash Chalase, Software Developer, React Developer, Portfolio, Full Stack Developer, Web Developer" />
+    content="Yash Chalase is a Full Stack Developer in Mumbai building production-ready web apps with React.js, Next.js, TypeScript, Node.js and PostgreSQL." />
   <meta name="author" content="Yash Chalase" />
-  <meta name="theme-color" content="#020617" />
-  <meta property="og:title" content="Yash Chalase — Software Developer Portfolio" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="__SITE_URL__/" />
+
+  <!-- Applies the saved/OS theme before first paint to avoid a flash. -->
+  <script>
+    (function () {
+      var d = document.documentElement, t;
+      d.classList.add("js");
+      try { t = localStorage.getItem("theme"); } catch (e) { }
+      if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      d.setAttribute("data-theme", t);
+    })();
+  </script>
+
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="me" href="https://github.com/yashchalase" />
+  <link rel="me" href="https://www.linkedin.com/in/yash-chalase-9a589b248/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Fonts load without blocking first paint; system fallbacks render meanwhile. -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" />
+  </noscript>
+  <link rel="preload" as="image" href="/yash-chalase.webp" type="image/webp" fetchpriority="high"
+    imagesrcset="/yash-chalase-480.webp 480w, /yash-chalase.webp 900w" imagesizes="(max-width: 900px) 62vw, 30vw" />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Yash Chalase" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:url" content="__SITE_URL__/" />
+  <meta property="og:title" content="Yash Chalase — Full Stack Developer" />
   <meta property="og:description"
-    content="Software Developer building scalable web apps with React, Next.js, and Node.js." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/og-image.svg" />
+    content="Full Stack Developer building production-ready web apps with React.js, Next.js, TypeScript and Node.js." />
+  <meta property="og:image" content="__SITE_URL__/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Yash Chalase — Full Stack Developer" />
+  <meta property="profile:first_name" content="Yash" />
+  <meta property="profile:last_name" content="Chalase" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Yash Chalase — Software Developer Portfolio" />
+  <meta name="twitter:title" content="Yash Chalase — Full Stack Developer" />
   <meta name="twitter:description"
-    content="Software Developer building scalable web apps with React, Next.js, and Node.js." />
-  <meta name="twitter:image" content="/og-image.svg" />
-  <title>Yash Chalase | Software Developer Portfolio</title>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Yash Chalase",
-      "jobTitle": "Software Developer",
-      "url": "https://github.com/yashchalase",
-      "sameAs": [
-        "https://github.com/yashchalase",
-        "https://www.linkedin.com/in/yash-chalase-9a589b248/"
-      ],
-      "email": "yashchalase@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Mumbai",
-        "addressRegion": "Maharashtra",
-        "addressCountry": "IN"
-      }
-    }
-  </script>
+    content="Full Stack Developer building production-ready web apps with React.js, Next.js, TypeScript and Node.js." />
+  <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+  <!--structured-data-->
 </head>
 
 <body>

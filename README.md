@@ -1,12 +1,14 @@
 # Yash Chalase — Portfolio
 
-Personal portfolio website showcasing projects, experience, and skills as a Software Developer.
+Personal portfolio of Yash Chalase, a Full Stack Developer (React.js, Next.js, TypeScript, Node.js).
+
+Live: https://yash-portfolio-website-mu.vercel.app
 
 ## Tech Stack
 
-- React 19 + Vite
-- Framer Motion
-- Custom CSS (responsive, dark theme)
+- React 19 + Vite, prerendered to static HTML at build time
+- Framer Motion (lazy-loaded features) for interactive motion
+- Hand-written CSS — monochrome editorial design system with light/dark themes
 
 ## Getting Started
 
@@ -17,13 +19,28 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Contact Form (Optional)
+## Updating content
 
-By default, the contact form opens your email client via `mailto:`. For direct form submissions, sign up at [Web3Forms](https://web3forms.com/) and add your access key:
+All copy lives in `src/data/resumeData.js` and mirrors the resume at `public/Yash_Chalase_Resume.pdf`. When the resume changes, replace the PDF and update the data file — the page, structured data (JSON-LD) and SEO tags are generated from it.
+
+Project screenshots are WebP files in `public/projects/` (crop out browser chrome; ~1600px wide).
+
+## SEO
+
+`npm run build` does three things:
+
+1. `vite build` — client bundle. A small plugin in `vite.config.js` fills canonical / Open Graph URLs, injects Person + ProfilePage JSON-LD, and emits `sitemap.xml` and `robots.txt`.
+2. `vite build --ssr` — server bundle of the app.
+3. `scripts/prerender.js` — renders the app into `dist/index.html`, so crawlers get full content without running JavaScript.
+
+The site URL defaults to the Vercel domain; set `VITE_SITE_URL` if you move to a custom domain.
+
+## Environment variables (optional)
 
 ```bash
 # .env
-VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
+VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here   # contact form; falls back to mailto: without it
+VITE_SITE_URL=https://your-domain.com            # canonical + sitemap URL
 ```
 
 ## Scripts
@@ -31,7 +48,7 @@ VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Start development server |
-| `npm run build` | Production build |
+| `npm run build` | Production build + prerender |
 | `npm run preview` | Preview production build |
 | `npm run lint` | Run ESLint |
 
@@ -39,20 +56,14 @@ VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
 
 ```
 src/
-  components/   # Navbar, ScrollProgress, BackToTop, etc.
-  sections/     # Hero, About, Experience, Projects, ...
+  components/   # Navbar, ThemeToggle, BrowserFrame, SectionHeading, ...
+  sections/     # Hero, About, Experience, Projects, Skills, Education, Resume, Contact, Footer
   data/         # resumeData.js — single source of content
-public/         # Images, favicon, OG image, project previews
+  hooks/        # useReveal — CSS-driven scroll reveals
+scripts/        # prerender.js
+public/         # Portrait, project screenshots, resume PDF, OG image, favicon
 ```
-
-## Customization
-
-Edit `src/data/resumeData.js` to update all portfolio content. Replace SVG previews in `public/projects/` with real screenshots when available.
 
 ## Deploy
 
-Build and deploy the `dist` folder to Vercel, Netlify, or GitHub Pages:
-
-```bash
-npm run build
-```
+Pushing to `main` deploys on Vercel (`vercel.json` adds long-term caching for hashed assets).

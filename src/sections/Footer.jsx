@@ -1,77 +1,61 @@
-import { FaGithub, FaLinkedinIn, FaEnvelope, FaHeart } from "react-icons/fa";
+import { FiGithub, FiLinkedin, FiMail, FiArrowUp } from "react-icons/fi";
+import { navItems } from "../data/navigation";
 import resumeData from "../data/resumeData";
 
 export default function Footer() {
-    const { name, email, github, linkedin } = resumeData.personal;
+    const { name, email, phone, github, linkedin, headline } = resumeData.personal;
     const currentYear = new Date().getFullYear();
 
-    const navItems = [
-        "About",
-        "Experience",
-        "Projects",
-        "Skills",
-        "Education",
-        "Contact",
-    ];
-
     const socialLinks = [
-        { icon: <FaGithub />, href: github, label: "GitHub" },
-        { icon: <FaLinkedinIn />, href: linkedin, label: "LinkedIn" },
-        { icon: <FaEnvelope />, href: `mailto:${email}`, label: "Email" },
+        { icon: <FiGithub />, href: github, label: "GitHub" },
+        { icon: <FiLinkedin />, href: linkedin, label: "LinkedIn" },
+        { icon: <FiMail />, href: `mailto:${email}`, label: "Email" },
     ];
-
-    const scrollTo = (id) => {
-        const el = document.getElementById(id.toLowerCase());
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-    };
 
     return (
         <footer className="footer">
-            <div className="footer-inner">
-                <div className="footer-content">
-                    <div className="footer-brand">
-                        <h3 className="footer-logo">
-                            <span className="gradient-text">{name.split(" ")[0]}</span>
-                            <span className="navbar-logo-dot">.</span>
-                        </h3>
-                        <p className="footer-tagline">
-                            Building the web, one pixel at a time.
-                        </p>
-                    </div>
-
-                    <div className="footer-nav">
-                        {navItems.map((item) => (
-                            <button
-                                key={item}
-                                onClick={() => scrollTo(item)}
-                                className="footer-nav-link"
-                            >
-                                {item}
-                            </button>
+            <div className="container">
+                <div className="footer-top">
+                    <address className="footer-tagline">
+                        <span className="footer-tagline-name">
+                            {name} — {headline}
+                        </span>
+                        <span>Mumbai, India</span>
+                        <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone.replace(/\s/g, "")}</a>
+                    </address>
+                    <nav aria-label="Footer">
+                        <ul className="footer-nav">
+                            {navItems.map((item) => (
+                                <li key={item.id}>
+                                    <a href={`#${item.id}`}>{item.label}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                    <ul className="footer-socials">
+                        {socialLinks.map((social) => (
+                            <li key={social.label}>
+                                <a
+                                    href={social.href}
+                                    {...(social.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer me" } : {})}
+                                    aria-label={social.label}
+                                >
+                                    {social.icon}
+                                </a>
+                            </li>
                         ))}
-                    </div>
-
-                    <div className="footer-socials">
-                        {socialLinks.map((social, i) => (
-                            <a
-                                key={i}
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="footer-social-icon"
-                                aria-label={social.label}
-                            >
-                                {social.icon}
-                            </a>
-                        ))}
-                    </div>
+                    </ul>
                 </div>
 
+                <p className="footer-wordmark" aria-hidden="true">
+                    {name}
+                </p>
+
                 <div className="footer-bottom">
-                    <p className="footer-copyright">
-                        © {currentYear} {name}. Made with{" "}
-                        <FaHeart className="footer-heart" /> using React.
-                    </p>
+                    <p>© {currentYear} {name}. All rights reserved.</p>
+                    <a href="#hero" className="footer-top-link">
+                        Back to top <FiArrowUp aria-hidden="true" />
+                    </a>
                 </div>
             </div>
         </footer>

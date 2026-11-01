@@ -1,28 +1,21 @@
-import { motion } from "framer-motion";
-
-export default function SectionHeading({ title, subtitle }) {
+// Editorial section header: index + label on the left, oversized title on the right.
+export default function SectionHeading({ index, label, title, titleId, children }) {
     return (
-        <div className="section-heading-wrapper">
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="section-title"
-            >
-                <span className="gradient-text">{title}</span>
-            </motion.h2>
-            {subtitle && (
-                <motion.p
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    className="section-subtitle"
-                >
-                    {subtitle}
-                </motion.p>
-            )}
+        <div className="section-heading">
+            <p className="section-label" data-reveal>
+                <span className="section-index">({index})</span>
+                {label}
+            </p>
+            <div className="section-heading-main">
+                <h2 id={titleId} className="section-title" data-reveal>
+                    {title}
+                </h2>
+                {children && (
+                    <p className="section-intro" data-reveal style={{ "--d": "80ms" }}>
+                        {children}
+                    </p>
+                )}
+            </div>
         </div>
     );
 }

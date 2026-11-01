@@ -1,22 +1,11 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-    FaEnvelope,
-    FaPhone,
-    FaMapMarkerAlt,
-    FaGithub,
-    FaLinkedinIn,
-    FaPaperPlane,
-    FaCheckCircle,
-    FaExclamationCircle,
-} from "react-icons/fa";
-import SectionHeading from "../components/SectionHeading";
+import { FiArrowUpRight, FiCheck, FiAlertCircle, FiArrowRight } from "react-icons/fi";
 import resumeData from "../data/resumeData";
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
 export default function Contact() {
-    const { email, phone, location, github, linkedin } = resumeData.personal;
+    const { email, phone, location, github, linkedin, whatsapp } = resumeData.personal;
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -44,6 +33,10 @@ export default function Contact() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!e.currentTarget.checkValidity()) {
+            e.currentTarget.reportValidity();
+            return;
+        }
         setStatus("submitting");
         setErrorMessage("");
 
@@ -79,170 +72,118 @@ export default function Contact() {
         }
     };
 
-    const contactInfo = [
-        { icon: <FaEnvelope />, label: "Email", value: email, href: `mailto:${email}` },
-        { icon: <FaPhone />, label: "Phone", value: phone, href: `tel:${phone.replace(/\s/g, "")}` },
-        { icon: <FaMapMarkerAlt />, label: "Location", value: location },
+    const links = [
+        { label: "Email", value: email, href: `mailto:${email}` },
+        { label: "WhatsApp", value: phone, href: whatsapp, external: true },
+        { label: "LinkedIn", value: "in/yash-chalase", href: linkedin, external: true },
+        { label: "GitHub", value: "@yashchalase", href: github, external: true },
+        { label: "Phone", value: phone, href: `tel:${phone.replace(/\s/g, "")}` },
     ];
 
-    const socialLinks = [
-        { icon: <FaGithub />, label: "GitHub", href: github },
-        { icon: <FaLinkedinIn />, label: "LinkedIn", href: linkedin },
-        { icon: <FaEnvelope />, label: "Email", href: `mailto:${email}` },
+    const fields = [
+        { name: "name", label: "Your name", type: "text", autoComplete: "name" },
+        { name: "email", label: "Your email", type: "email", autoComplete: "email" },
     ];
 
     return (
-        <section id="contact" className="contact">
-            <div className="contact-bg" />
-            <div className="section-container" style={{ position: "relative", zIndex: 10 }}>
-                <SectionHeading
-                    title="Get In Touch"
-                    subtitle="Have a project in mind or want to collaborate? Let's connect!"
-                />
+        <section id="contact" className="section contact" aria-labelledby="contact-title">
+            <div className="container">
+                <p className="section-label" data-reveal>
+                    <span className="section-index">(07)</span>
+                    Contact
+                </p>
+                <h2 id="contact-title" className="contact-title" data-reveal>
+                    Let&apos;s build something <em>together.</em>
+                </h2>
+                <a href={`mailto:${email}`} className="contact-email" data-reveal>
+                    {email}
+                    <FiArrowUpRight aria-hidden="true" />
+                </a>
 
                 <div className="contact-grid">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="contact-info-cards"
-                    >
-                        <div className="glass-card contact-info-card">
-                            <h3 className="contact-info-title">Contact Information</h3>
-                            <div className="contact-info-items">
-                                {contactInfo.map((info) => {
-                                    const content = (
-                                        <>
-                                            <div className="contact-info-icon-box">{info.icon}</div>
-                                            <div>
-                                                <p className="contact-info-label">{info.label}</p>
-                                                <p className="contact-info-value">{info.value}</p>
-                                            </div>
-                                        </>
-                                    );
-
-                                    return info.href ? (
-                                        <a key={info.label} href={info.href} className="contact-info-link">
-                                            {content}
-                                        </a>
-                                    ) : (
-                                        <div key={info.label} className="contact-info-link">
-                                            {content}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div className="glass-card contact-info-card">
-                            <h3 className="contact-connect-title">Connect With Me</h3>
-                            <div className="contact-socials">
-                                {socialLinks.map((social) => (
+                    <div className="contact-side" data-reveal>
+                        <ul className="contact-links">
+                            {links.map((link) => (
+                                <li key={link.label}>
                                     <a
-                                        key={social.label}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="social-icon"
-                                        aria-label={social.label}
+                                        href={link.href}
+                                        {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                                     >
-                                        {social.icon}
+                                        <span className="contact-link-label">{link.label}</span>
+                                        <span className="contact-link-value">{link.value}</span>
+                                        <FiArrowUpRight aria-hidden="true" />
                                     </a>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="contact-location">
+                            {location} — available for new opportunities.
+                        </p>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <form onSubmit={handleSubmit} className="glass-card contact-form-card" noValidate>
-                            <div className="contact-form">
-                                <div className="contact-form-row">
-                                    <div className="contact-form-group">
-                                        <label htmlFor="contact-name">Your Name</label>
-                                        <input
-                                            id="contact-name"
-                                            type="text"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            placeholder="John Doe"
-                                            required
-                                            className="contact-input"
-                                        />
-                                    </div>
-                                    <div className="contact-form-group">
-                                        <label htmlFor="contact-email">Your Email</label>
-                                        <input
-                                            id="contact-email"
-                                            type="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            placeholder="john@example.com"
-                                            required
-                                            className="contact-input"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="contact-form-group">
-                                    <label htmlFor="contact-subject">Subject</label>
+                    <form onSubmit={handleSubmit} className="contact-form" noValidate data-reveal style={{ "--d": "80ms" }}>
+                        <div className="contact-form-row">
+                            {fields.map((field) => (
+                                <div className="field" key={field.name}>
                                     <input
-                                        id="contact-subject"
-                                        type="text"
-                                        name="subject"
-                                        value={formData.subject}
+                                        id={`contact-${field.name}`}
+                                        type={field.type}
+                                        name={field.name}
+                                        value={formData[field.name]}
                                         onChange={handleChange}
-                                        placeholder="Project Inquiry"
+                                        autoComplete={field.autoComplete}
+                                        placeholder=" "
                                         required
-                                        className="contact-input"
                                     />
+                                    <label htmlFor={`contact-${field.name}`}>{field.label}</label>
                                 </div>
-                                <div className="contact-form-group">
-                                    <label htmlFor="contact-message">Message</label>
-                                    <textarea
-                                        id="contact-message"
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleChange}
-                                        placeholder="Tell me about your project or idea..."
-                                        required
-                                        rows={5}
-                                        className="contact-input contact-textarea"
-                                    />
-                                </div>
+                            ))}
+                        </div>
+                        <div className="field">
+                            <input
+                                id="contact-subject"
+                                type="text"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                placeholder=" "
+                                required
+                            />
+                            <label htmlFor="contact-subject">Subject</label>
+                        </div>
+                        <div className="field">
+                            <textarea
+                                id="contact-message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder=" "
+                                required
+                                rows={5}
+                            />
+                            <label htmlFor="contact-message">Tell me about your project or role</label>
+                        </div>
 
-                                {status === "success" && (
-                                    <p className="contact-status contact-status-success" role="status">
-                                        <FaCheckCircle />
-                                        {WEB3FORMS_KEY
-                                            ? "Message sent! I'll get back to you soon."
-                                            : "Your email client should open — send the message from there."}
-                                    </p>
-                                )}
-                                {status === "error" && (
-                                    <p className="contact-status contact-status-error" role="alert">
-                                        <FaExclamationCircle />
-                                        {errorMessage}
-                                    </p>
-                                )}
+                        {status === "success" && (
+                            <p className="contact-status" role="status">
+                                <FiCheck aria-hidden="true" />
+                                {WEB3FORMS_KEY
+                                    ? "Message sent — I'll get back to you soon."
+                                    : "Your email client should open — send the message from there."}
+                            </p>
+                        )}
+                        {status === "error" && (
+                            <p className="contact-status contact-status-error" role="alert">
+                                <FiAlertCircle aria-hidden="true" />
+                                {errorMessage}
+                            </p>
+                        )}
 
-                                <button
-                                    type="submit"
-                                    className="btn-primary btn-primary-full"
-                                    disabled={status === "submitting"}
-                                >
-                                    <FaPaperPlane />
-                                    {status === "submitting" ? "Sending..." : "Send Message"}
-                                </button>
-                            </div>
-                        </form>
-                    </motion.div>
+                        <button type="submit" className="btn btn-solid contact-submit" disabled={status === "submitting"}>
+                            {status === "submitting" ? "Sending…" : "Send message"}
+                            <FiArrowRight aria-hidden="true" />
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>

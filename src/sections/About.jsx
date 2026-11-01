@@ -1,105 +1,88 @@
-import { motion } from "framer-motion";
-import {
-    FaMapMarkerAlt,
-    FaEnvelope,
-    FaPhone,
-    FaCheckCircle,
-} from "react-icons/fa";
 import SectionHeading from "../components/SectionHeading";
 import resumeData from "../data/resumeData";
 
-const SKILL_COUNT = Object.values(resumeData.skills).flat().length;
+const marqueeItems = ["React.js", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Python", "Docker", "n8n"];
+
+const services = [
+    {
+        title: "Frontend",
+        text: "Responsive, production-ready interfaces and dashboards in React.js, Next.js and TypeScript.",
+    },
+    {
+        title: "Backend & APIs",
+        text: "REST APIs with Node.js, Express.js and Python, backed by PostgreSQL, MongoDB and Supabase.",
+    },
+    {
+        title: "Tools & workflow",
+        text: "Docker-based environments, Git workflows, and n8n and Claude Code for automation and speed.",
+    },
+];
 
 export default function About() {
-    const { name, summary, highlights, location, email, phone } =
-        resumeData.personal;
+    const { city } = resumeData.personal;
+    const [degree] = resumeData.education;
 
-    const stats = [
-        { label: "Projects Built", value: `${resumeData.projects.length}+` },
-        { label: "Years Experience", value: "1+" },
-        { label: "Technologies", value: `${SKILL_COUNT}+` },
-        { label: "CGPA", value: "8.44" },
+    const facts = [
+        { label: "Based in", value: `${city}, India` },
+        { label: "Role", value: "Full Stack Developer" },
+        { label: "Education", value: `B.E. Computer Engineering — CGPA ${degree.grade}` },
+        { label: "Experience", value: "1.5+ years" },
     ];
 
     return (
-        <section id="about" className="about">
-            <div className="about-bg" />
-            <div className="section-container" style={{ position: "relative", zIndex: 10 }}>
-                <SectionHeading
-                    title="About Me"
-                    subtitle="Get to know me better — my background, passion, and what drives me."
-                />
-
-                <div className="about-grid">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <div className="glass-card about-card">
-                            <h3 className="about-name-heading">
-                                Hello! I&apos;m <span className="gradient-text">{name}</span>
-                            </h3>
-                            <p className="about-summary">{summary}</p>
-
-                            <div className="about-highlights">
-                                {highlights.map((highlight, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
-                                        className="about-highlight-item"
-                                    >
-                                        <FaCheckCircle className="about-highlight-icon" />
-                                        <span className="about-highlight-text">{highlight}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-
-                            <div className="about-contact-info">
-                                <div className="about-contact-item">
-                                    <FaMapMarkerAlt className="about-contact-item-icon" />
-                                    {location}
-                                </div>
-                                <a href={`mailto:${email}`} className="about-contact-item about-contact-link">
-                                    <FaEnvelope className="about-contact-item-icon" />
-                                    {email}
-                                </a>
-                                <a href={`tel:${phone.replace(/\s/g, "")}`} className="about-contact-item about-contact-link">
-                                    <FaPhone className="about-contact-item-icon" />
-                                    {phone}
-                                </a>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <div className="about-stats">
-                            {stats.map((stat, i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.1 * i }}
-                                    className="glass-card about-stat-card"
-                                >
-                                    <div className="about-stat-value gradient-text">{stat.value}</div>
-                                    <div className="about-stat-label">{stat.label}</div>
-                                </motion.div>
+        <>
+            <div className="marquee" aria-hidden="true">
+                <div className="marquee-track">
+                    {[0, 1].map((copy) => (
+                        <span className="marquee-group" key={copy}>
+                            {marqueeItems.map((item) => (
+                                <span key={item} className="marquee-item">
+                                    {item}
+                                    <span className="marquee-sep">✦</span>
+                                </span>
                             ))}
-                        </div>
-                    </motion.div>
+                        </span>
+                    ))}
                 </div>
             </div>
-        </section>
+
+            <section id="about" className="section about" aria-labelledby="about-title">
+                <div className="container">
+                    <SectionHeading index="01" label="Introduction" title="About me" titleId="about-title" />
+
+                    <div className="about-grid">
+                        <p className="about-statement" data-reveal>
+                            I&apos;m a Full Stack Developer with 1.5+ years of experience building{" "}
+                            <em>scalable web applications.</em>
+                            <span className="muted">
+                                {" "}I work on AI-powered products, enterprise solutions, and client projects,
+                                turning ideas and business requirements into real-world digital products.
+                            </span>
+                        </p>
+
+                        <div className="about-side">
+                            <dl className="about-facts">
+                                {facts.map((fact, i) => (
+                                    <div className="about-fact" key={fact.label} data-reveal style={{ "--d": `${i * 60}ms` }}>
+                                        <dt>{fact.label}</dt>
+                                        <dd>{fact.value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </div>
+
+                        <ul className="about-services">
+                            {services.map((service, i) => (
+                                <li key={service.title} className="about-service" data-reveal style={{ "--d": `${i * 80}ms` }}>
+                                    <span className="about-service-index">0{i + 1}</span>
+                                    <h3 className="about-service-title">{service.title}</h3>
+                                    <p className="about-service-text">{service.text}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </>
     );
 }

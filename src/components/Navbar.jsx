@@ -1,135 +1,125 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-    FaBars,
-    FaTimes,
-    FaHome,
-    FaUser,
-    FaCode,
-    FaProjectDiagram,
-    FaBriefcase,
-    FaGraduationCap,
-    FaAward,
-    FaEnvelope,
-} from "react-icons/fa";
+import { m, AnimatePresence } from "framer-motion";
+import { FiArrowDownRight } from "react-icons/fi";
+import ThemeToggle from "./ThemeToggle";
 import resumeData from "../data/resumeData";
-
-const navItems = [
-    { id: "hero", label: "Home", icon: <FaHome /> },
-    { id: "about", label: "About", icon: <FaUser /> },
-    { id: "experience", label: "Experience", icon: <FaBriefcase /> },
-    { id: "projects", label: "Projects", icon: <FaProjectDiagram /> },
-    { id: "skills", label: "Skills", icon: <FaCode /> },
-    { id: "education", label: "Education", icon: <FaGraduationCap /> },
-    { id: "certifications", label: "Achievements", icon: <FaAward /> },
-    { id: "contact", label: "Contact", icon: <FaEnvelope /> },
-];
+import { navItems } from "../data/navigation";
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState("hero");
+    const [activeSection, setActiveSection] = useState("");
     const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-            const sections = navItems.map((item) => item.id);
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const section = document.getElementById(sections[i]);
-                if (section) {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top <= 120) {
-                        setActiveSection(sections[i]);
-                        break;
-                    }
-                }
-            }
+        // A sentinel at the top of the page reports reliably even when the
+        // browser restores a deep-link (#contact) position without scroll events.
+        const topObserver = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting));
+        const sentinel = document.querySelector(".nav-sentinel");
+        if (sentinel) topObserver.observe(sentinel);
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) setActiveSection(entry.target.id);
+                });
+            },
+            { rootMargin: "-45% 0px -50% 0px" }
+        );
+        ["hero", ...navItems.map((item) => item.id), "resume"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
+
+        return () => {
+            topObserver.disconnect();
+            observer.disconnect();
         };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const scrollTo = (id) => {
-        setMobileOpen(false);
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-    };
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? "hidden" : "";
+        if (!mobileOpen) return;
+        const onKey = (e) => e.key === "Escape" && setMobileOpen(false);
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [mobileOpen]);
 
     return (
         <>
-            <motion.nav
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
-            >
-                <div className="navbar-inner">
-                    <button onClick={() => scrollTo("hero")} className="navbar-logo">
-                        <span className="gradient-text">
-                            {resumeData.personal.name.split(" ")[0]}
-                        </span>
-                        <span className="navbar-logo-dot">.</span>
-                    </button>
+            <div className="nav-sentinel" aria-hidden="true" />
+            <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+                <nav className="navbar-inner" aria-label="Primary">
+                    <a href="#hero" className="navbar-logo" onClick={() => setMobileOpen(false)}>
+                        {resumeData.personal.name}
+                        <span className="navbar-logo-mark" aria-hidden="true">©26</span>
+                    </a>
 
-                    <div className="navbar-links">
+                    <ul className="navbar-links">
                         {navItems.map((item) => (
-                            <button
-                                key={item.id}
-                                onClick={() => scrollTo(item.id)}
-                                className={`navbar-link ${activeSection === item.id ? "navbar-link-active" : ""}`}
-                            >
-                                <span className="navbar-link-icon">{item.icon}</span>
-                                {item.label}
-                            </button>
+                            <li key={item.id}>
+                                <a
+                                    href={`#${item.id}`}
+                                    className={`navbar-link ${activeSection === item.id ? "is-active" : ""}`}
+                                    aria-current={activeSection === item.id ? "true" : undefined}
+                                >
+                                    {item.label}
+                                </a>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
 
-                    <button
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className="navbar-hamburger"
-                        aria-label="Toggle menu"
-                    >
-                        {mobileOpen ? <FaTimes /> : <FaBars />}
-                    </button>
-                </div>
-            </motion.nav>
-
-            <AnimatePresence>
-                {mobileOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="mobile-overlay"
-                            onClick={() => setMobileOpen(false)}
-                        />
-                        <motion.div
-                            initial={{ x: 300 }}
-                            animate={{ x: 0 }}
-                            exit={{ x: 300 }}
-                            transition={{ type: "spring", damping: 25 }}
-                            className="mobile-menu"
+                    <div className="navbar-actions">
+                        <ThemeToggle />
+                        <a href="#resume" className="navbar-cta">
+                            Resume <FiArrowDownRight aria-hidden="true" />
+                        </a>
+                        <button
+                            type="button"
+                            onClick={() => setMobileOpen((open) => !open)}
+                            className={`navbar-menu-btn ${mobileOpen ? "is-open" : ""}`}
+                            aria-expanded={mobileOpen}
+                            aria-controls="mobile-menu"
+                            aria-label={mobileOpen ? "Close menu" : "Open menu"}
                         >
-                            <div className="mobile-menu-items">
-                                {navItems.map((item, i) => (
-                                    <motion.button
+                            <span />
+                            <span />
+                        </button>
+                    </div>
+                </nav>
+
+                <AnimatePresence>
+                    {mobileOpen && (
+                        <m.div
+                            id="mobile-menu"
+                            className="mobile-menu"
+                            initial={{ clipPath: "inset(0 0 100% 0)" }}
+                            animate={{ clipPath: "inset(0 0 0% 0)" }}
+                            exit={{ clipPath: "inset(0 0 100% 0)" }}
+                            transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                        >
+                            <ul>
+                                {[...navItems, { id: "resume", label: "Resume" }].map((item, i) => (
+                                    <m.li
                                         key={item.id}
-                                        initial={{ opacity: 0, x: 30 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.05 }}
-                                        onClick={() => scrollTo(item.id)}
-                                        className={`mobile-menu-link ${activeSection === item.id ? "mobile-menu-link-active" : ""}`}
+                                        initial={{ opacity: 0, y: 24 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.15 + i * 0.05, duration: 0.4 }}
                                     >
-                                        <span className="mobile-menu-link-icon">{item.icon}</span>
-                                        {item.label}
-                                    </motion.button>
+                                        <a href={`#${item.id}`} onClick={() => setMobileOpen(false)}>
+                                            <span className="mobile-menu-index">0{i + 1}</span>
+                                            {item.label}
+                                        </a>
+                                    </m.li>
                                 ))}
+                            </ul>
+                            <div className="mobile-menu-foot">
+                                <a href={`mailto:${resumeData.personal.email}`}>{resumeData.personal.email}</a>
+                                <span>{resumeData.personal.city}, IN</span>
                             </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                        </m.div>
+                    )}
+                </AnimatePresence>
+            </header>
         </>
     );
 }
